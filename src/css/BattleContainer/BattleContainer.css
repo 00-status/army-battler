@@ -1,0 +1,9 @@
+
+.battle_container {
+    display: flex;
+    justify-content: center;
+}
+
+.battle_container__top {
+    border: 1px solid black;
+}

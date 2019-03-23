@@ -1,5 +1,6 @@
 //@flow
 import React from "react";
+import '../../../css/BattleContainer/Message.css';
 
 type props = {
     title: string,
@@ -7,7 +8,7 @@ type props = {
 }
 
 const Message = (props: props) => {
-    return <div>
+    return <div className="message">
         <h4>{props.title}</h4>
         <p>{props.contents}</p>
     </div>;

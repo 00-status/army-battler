@@ -1,0 +1,17 @@
+.army_stats {
+    display: inline-block;
+    min-width: 60px;
+}
+
+.army_stats__title-box {
+    border-bottom: 1px solid black;
+}
+.army_stats__title {
+    margin: 3px 0;
+}
+
+.army_stats--center-text {
+    margin: 6px;
+    text-align: center;
+}
+
