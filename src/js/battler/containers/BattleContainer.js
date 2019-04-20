@@ -3,42 +3,50 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ArmyStats from '../components/ArmyStats';
 import Message from '../components/Message';
-import { type Message as message} from '../types';
+import Maneuvers from '../components/Maneuvers';
+import type { MessageType, ManeuverType, Army} from '../types';
+
 import '../../../css/BattleContainer/BattleContainer.css';
-import { selectMessages } from '../selectors';
+import { selectMessages, selectManeuvers, selectArmies } from '../selectors';
 
 type Props = {
-    messages: Array<message>
+    armies: Array<Army>,
+    messages: Array<MessageType>,
+    maneuvers: Array<ManeuverType>
 };
 
 class BattleContainer extends Component<Props>
 {
     render()
     {
+        const [army1, army2] = this.props.armies;
         return <div className="battle_container">
             <div className="battle_container__top">
             <ArmyStats
-                    name="Guardians"
-                    size={1000}
-                    morale={100}
-                    discipline={5}
-                    attack={15}
+                    name={army1.name}
+                    size={army1.size}
+                    morale={army1.morale}
+                    discipline={army1.discipline}
+                    attack={army1.attack}
                 />
                 <div className="army_stats">
                 {this.props.messages.map(this.mapMessages)}
                 </div>
                 <ArmyStats
-                    name="Reavers"
-                    size={800}
-                    morale={100}
-                    discipline={2}
-                    attack={118}
+                    name={army2.name}
+                    size={army2.size}
+                    morale={army2.morale}
+                    discipline={army2.discipline}
+                    attack={army2.attack}
                 />
+            </div>
+            <div>
+                <Maneuvers maneuvers={this.props.maneuvers} />
             </div>
         </div>
     }
 
-    mapMessages(message: message) {
+    mapMessages(message: MessageType) {
         return <Message
             key={message.key}
             title={message.title}
@@ -49,7 +57,9 @@ class BattleContainer extends Component<Props>
 
 const mapStateToProps = (state: any) => {
     return {
-        messages: selectMessages(state)
+        armies: selectArmies(state),
+        messages: selectMessages(state),
+        maneuvers: selectManeuvers(state)
     }
 };
 
