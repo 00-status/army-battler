@@ -1,6 +1,6 @@
 //@flow
 import React from 'react';
-import '../../../css/BattleContainer/ArmyStats.css';
+import './ArmyStats.css';
 
 type Props = {
     name: string,

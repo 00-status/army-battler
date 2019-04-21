@@ -1,7 +1,7 @@
 //@flow
 import React, { Component} from "react";
 import {hot} from "react-hot-loader";
-import "../css/App.css";
+import "./App.css";
 
 import BattleContainer from './battler/containers/BattleContainer'
 

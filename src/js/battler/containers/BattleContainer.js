@@ -6,7 +6,7 @@ import Message from '../components/Message';
 import Maneuvers from '../components/Maneuvers';
 import type { MessageType, ManeuverType, Army} from '../types';
 
-import '../../../css/BattleContainer/BattleContainer.css';
+import './BattleContainer.css';
 import { selectMessages, selectManeuvers, selectArmies } from '../selectors';
 
 type Props = {

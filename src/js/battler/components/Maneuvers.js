@@ -4,7 +4,7 @@ import React, { useState, Fragment } from 'react';
 import * as types from '../types';
 import Navigation from '../../components/Navigation/Navigation';
 
-import '../../../css/BattleContainer/Maneuvers.css';
+import './Maneuvers.css';
 
 type Props = {
     maneuvers: Array<types.ManeuverType>

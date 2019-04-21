@@ -1,6 +1,6 @@
 //@flow
 import React from "react";
-import '../../../css/BattleContainer/Message.css';
+import './Message.css';
 
 type props = {
     title: string,
