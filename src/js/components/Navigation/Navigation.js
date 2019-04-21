@@ -14,7 +14,7 @@ const Navigation = (props: Props) => {
 
 const renderNavigationItems = (navigationItems: Array<NavigationItem>) => {
     return navigationItems.map((navigationItem) => (
-        <div key={navigationItem.value} onClick={navigationItem.callback}>
+        <div key={navigationItem.value} onMouseOver={navigationItem.hoverCallback} onClick={navigationItem.clickCallback}>
             {navigationItem.label}
         </div>
     ));

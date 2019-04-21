@@ -40,7 +40,7 @@ class BattleContainer extends Component<Props>
                     attack={army2.attack}
                 />
             </div>
-            <div>
+            <div className="battle_container__bottom">
                 <Maneuvers maneuvers={this.props.maneuvers} />
             </div>
         </div>

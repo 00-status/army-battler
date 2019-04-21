@@ -3,5 +3,6 @@
 export type NavigationItem = {
     label: string,
     value: number | string,
-    callback: any => any
+    hoverCallback: () => any,
+    clickCallback: () => any
 };
