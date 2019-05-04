@@ -6,20 +6,26 @@ export type Army = {
     attack: number,
     discipline: number,
     morale: number,
-    size: number
+    size: number,
+    currentAfflictions: Array<Affliction>
 };
 
-export type MessageType = {
+export type Message = {
     key: number,
     title: string,
     text: string
 }
-export type ManeuverType = {
+export type Maneuver = {
     title: string,
     contents: string,
+    afflictions: Array<Affliction>
+}
+
+export type Affliction = {
+    turns: number,
     damageMod: number,
     moraleMod: number,
     defenseMod: number,
     sizeMod: number,
     nameMod: string
-}
+};
