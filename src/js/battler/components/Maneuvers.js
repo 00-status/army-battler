@@ -7,6 +7,8 @@ import Navigation from '../../components/Navigation/Navigation';
 import './Maneuvers.css';
 
 type Props = {
+    playerArmy: types.Army,
+    computerArmy: types.Army,
     maneuvers: Array<types.ManeuverType>
 };
 
@@ -17,12 +19,12 @@ const Maneuvers = (props: Props) => {
             label: maneuver.title,
             value: maneuver.contents,
             hoverCallback: () => {setCurrentText(maneuver.contents)},
-            clickCallback: alert
+            clickCallback: () => {alert(props.playerArmy.name)}
         };
     });
 
     return <Fragment>
-        {navigationItems ? <Navigation onMouseOver={alert} navigationItems={navigationItems} /> : null}
+        {navigationItems ? <Navigation navigationItems={navigationItems} /> : null}
         <div className="maneuver-description-box">{currentText}</div>
     </Fragment>;
 };
