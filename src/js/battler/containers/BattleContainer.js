@@ -8,14 +8,16 @@ import type { Message as MessageType, Maneuver, Army} from '../types';
 
 import './BattleContainer.css';
 import { selectMessages, selectManeuvers, selectPlayerArmy, selectOpposingArmy } from '../selectors';
-import { changePlayerArmy } from '../actions';
+import { processAfflictions, performAffliction, addAffliction } from '../actions';
 
 type Props = {
     playerArmy: Army,
     opposingArmy: Army,
     messages: Array<MessageType>,
     maneuvers: Array<Maneuver>,
-    changePlayerArmy: typeof changePlayerArmy
+    processAfflictions: typeof processAfflictions,
+    performAffliction: typeof performAffliction,
+    addAffliction: typeof addAffliction
 };
 
 class BattleContainer extends Component<Props>
@@ -48,7 +50,9 @@ class BattleContainer extends Component<Props>
                 playerArmy={playerArmy}
                 computerArmy={this.props.opposingArmy}
                 maneuvers={this.props.maneuvers}
-                changeArmy={this.props.changePlayerArmy}
+                processAfflictions={this.props.processAfflictions}
+                performAffliction={this.props.performAffliction}
+                addAffliction={this.props.addAffliction}
                 />
             </div>
         </div>
@@ -64,7 +68,9 @@ class BattleContainer extends Component<Props>
 }
 
 const mapDispatchToProps = {
-    changePlayerArmy
+    processAfflictions,
+    performAffliction,
+    addAffliction
 };
 
 const mapStateToProps = (state: any) => {

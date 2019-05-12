@@ -5,24 +5,35 @@ import type {Army, Maneuver} from '../types';
 import Navigation from '../../components/Navigation/Navigation';
 
 import './Maneuvers.css';
-import { changePlayerArmy } from '../actions';
-import processAfflictions from '../tactician';
+import { processAfflictions, performAffliction, addAffliction } from '../actions';
 
 type Props = {
     playerArmy: Army,
     computerArmy: Army,
     maneuvers: Array<Maneuver>,
-    changeArmy: typeof changePlayerArmy
+    processAfflictions: typeof processAfflictions,
+    performAffliction: typeof performAffliction,
+    addAffliction: typeof addAffliction
 };
 
 const Maneuvers = (props: Props) => {
     const processTurn = (maneuver: Maneuver) => {
-        // Process player Afflictions
-        let data = processAfflictions(props.playerArmy, props.computerArmy);
-        if (data) {
-            props.changeArmy(data[0]);
-        }
-        // Process player maneuver
+        // Process current player maneuver
+        maneuver.afflictions.forEach(affliction => {
+            if (affliction.turns <= 0) {
+                props.performAffliction(false, affliction);
+            }
+            else {
+                props.addAffliction(false, affliction);
+            }
+        });
+        // Process afflictions for opponent
+        props.processAfflictions(false);
+
+        // Do opponent's turn
+
+        // Process afflictions for the player
+        props.processAfflictions(true);
     };
 
     const [currentText, setCurrentText] = useState('');

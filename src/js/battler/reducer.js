@@ -1,7 +1,12 @@
 // @flow
 
-import type {Army, Message, Maneuver} from './types';
-import { type Actions, CHANGE_PLAYER_ARMY } from './actions'
+import type {Army, Message, Maneuver, Affliction} from './types';
+import {
+    type Actions,
+    PROCESS_AFFLICTIONS,
+    ADD_AFFLICTION,
+    PERFORM_AFFLICTION
+ } from './actions'
 
 export type State = {
     playerArmy: Army,
@@ -19,9 +24,17 @@ const initialState: State = {
             morale: 10,
             size: 100,
             currentAfflictions: [{
-                turns: 0,
+                turns: 2,
                 damageMod: 1.5,
                 moraleMod: 0,
+                defenseMod: 0,
+                sizeMod: 0,
+                nameMod: ''
+            },
+            {
+                turns: 4,
+                damageMod: 0,
+                moraleMod: -2,
                 defenseMod: 0,
                 sizeMod: 0,
                 nameMod: ''
@@ -55,8 +68,8 @@ const initialState: State = {
             contents: 'To hell and high water!',
             afflictions: [{
                 turns: 0,
-                damageMod: 4,
-                moraleMod: 0,
+                damageMod: 0,
+                moraleMod: -2,
                 defenseMod: 0,
                 sizeMod: 0,
                 nameMod: '' 
@@ -66,7 +79,7 @@ const initialState: State = {
             title: 'Army of the Dead',
             contents: 'You see dead people.',
             afflictions: [{
-                turns: 0,
+                turns: 1,
                 damageMod: 0,
                 moraleMod: 0,
                 defenseMod: 0,
@@ -87,8 +100,8 @@ const initialState: State = {
             },
             {
                 turns: 4,
-                damageMod: 2,
-                moraleMod: 0,
+                damageMod: 0,
+                moraleMod: -2,
                 defenseMod: 0,
                 sizeMod: 0,
                 nameMod: ''
@@ -97,15 +110,92 @@ const initialState: State = {
     ]
 };
 
-const battler = (state: State = initialState, action: Actions) => {
+const battler = (state: State = initialState, action: Actions) =>
+{
+    let playerArmy = {};
+    let opposingArmy = {};
+    let affliction = {};
     switch (action.type) {
-        case CHANGE_PLAYER_ARMY:
-            let playerArmy = Object.assign({}, state.playerArmy)
-            playerArmy.morale -= action.data.damageMod;
-            return Object.assign({}, state, {playerArmy: playerArmy});
+        case ADD_AFFLICTION:
+            affliction = Object.assign({}, action.affliction);
+            // Check who we're adding the affliction to
+            if (action.onPlayer) {
+                playerArmy = Object.assign({}, state.playerArmy);
+                playerArmy.currentAfflictions.push(affliction);
+                return Object.assign({}, state, {playerArmy: playerArmy});
+            }
+            opposingArmy = Object.assign({}, state.opposingArmy);
+            opposingArmy.currentAfflictions.push(affliction);
+            return Object.assign({}, state, {opposingArmy: opposingArmy});
+        case PROCESS_AFFLICTIONS:
+            if (action.onPlayer) {
+                playerArmy = processCurrentAfflictions(state.playerArmy);
+                return Object.assign( {}, state, { playerArmy: playerArmy } );
+            }
+            else {
+                opposingArmy = processCurrentAfflictions(state.opposingArmy)
+                return Object.assign( {}, state, { opposingArmy: opposingArmy } );
+            }
+        case PERFORM_AFFLICTION:
+            // Check who we're performing the affliction on
+            let army = null;
+            if (action.onPlayer) {
+                // process affliction for player
+                army = processAffliction(state.playerArmy, action.affliction)
+                return Object.assign( {}, state, { playerArmy: army } );
+            }
+            else {
+                // process affliction for oponnent
+                army = processAffliction(state.opposingArmy, action.affliction)
+                return Object.assign( {}, state, { opposingArmy: army } );
+            }
         default:
             return state;
     }
+};
+
+const processAffliction = (army: Army, affliction: Affliction): Army =>
+{
+    army = Object.assign({}, army);
+    // Change the army's morale
+    army.morale += affliction.moraleMod;
+    // Change the army's damage
+    army.attack += affliction.damageMod; 
+    // Change the army's defense
+    army.discipline += affliction.defenseMod;
+    // Change the army's size
+    army.size += affliction.sizeMod;
+    // Change the army's name
+    army.name = affliction.nameMod !== '' ? affliction.nameMod : army.name
+
+    return army;
+};
+
+const processCurrentAfflictions = (army: Army): Army =>
+{
+    army = Object.assign({}, army);
+
+    // Remove spent afflictions
+    army.currentAfflictions = army.currentAfflictions.filter((affliction: Affliction) => {
+        return affliction.turns >= 1;
+    });
+
+    army.currentAfflictions.forEach((affliction, index) => {
+        // Decrement the current affliction's turns
+        affliction.turns--;
+        // Change the army's morale
+        army.morale += affliction.moraleMod;
+        // Change the army's damage
+        army.attack += affliction.damageMod; 
+        // Change the army's defense
+        army.discipline += affliction.defenseMod;
+        // Change the army's size
+        army.size += affliction.sizeMod;
+        // Change the army's name
+        army.name = affliction.nameMod !== '' ? affliction.nameMod : army.name
+    });
+
+    return army;
 };
 
 export default battler;

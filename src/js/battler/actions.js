@@ -1,15 +1,45 @@
 // @flow
-import type {Affliction} from './types';
-import processTurn from "./tactician";
+import type { Affliction } from './types'
+import processTurn from './tactician';
 
-export const CHANGE_PLAYER_ARMY: 'CHANGE_PLAYER_ARMY' = 'CHANGE_PLAYER_ARMY';
-export type ChangePlayerArmy = {
-    type: typeof CHANGE_PLAYER_ARMY,
-    data: Affliction
+export const PROCESS_AFFLICTIONS: 'PROCESS_AFFLICTIONS' = 'PROCESS_AFFLICTIONS';
+export type ProcessAfflictions = {
+    type: typeof PROCESS_AFFLICTIONS,
+    onPlayer: boolean
 };
-export const changePlayerArmy = (data: Affliction) =>
+export const processAfflictions = (onPlayer: boolean): ProcessAfflictions =>
 {
-    return { type: CHANGE_PLAYER_ARMY, data: data };
+    return { type: PROCESS_AFFLICTIONS, onPlayer };
 };
 
-export type Actions = ChangePlayerArmy;
+export const PERFORM_AFFLICTION: 'PERFORM_AFFLICTION' = 'PERFORM_AFFLICTION';
+export type PerformAffliction = {
+    type: typeof PERFORM_AFFLICTION,
+    onPlayer: boolean,
+    affliction: Affliction
+};
+export const performAffliction = (
+    onPlayer: boolean,
+    affliction: Affliction
+    ): PerformAffliction =>
+{
+    return { type: PERFORM_AFFLICTION, onPlayer, affliction };
+};
+
+export const ADD_AFFLICTION: 'ADD_AFFLICTION' = 'ADD_AFFLICTION';
+export type AddAffliction = {
+    type: typeof ADD_AFFLICTION,
+    onPlayer: boolean,
+    affliction: Affliction
+};
+export const addAffliction = (
+    onPlayer: boolean,
+    affliction: Affliction
+    ): AddAffliction =>
+{
+    return { type: ADD_AFFLICTION, onPlayer, affliction };
+}
+
+export type Actions = ProcessAfflictions |
+AddAffliction |
+PerformAffliction;
