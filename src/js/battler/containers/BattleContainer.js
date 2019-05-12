@@ -1,47 +1,59 @@
-//@flow
+// @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ArmyStats from '../components/ArmyStats';
 import Message from '../components/Message';
 import Maneuvers from '../components/Maneuvers';
-import type { MessageType, ManeuverType, Army} from '../types';
+import type { Message as MessageType, Maneuver, Army} from '../types';
 
 import './BattleContainer.css';
-import { selectMessages, selectManeuvers, selectArmies } from '../selectors';
+import { selectMessages, selectManeuvers, selectPlayerArmy, selectOpposingArmy } from '../selectors';
+import { processAfflictions, performAffliction, addAffliction } from '../actions';
 
 type Props = {
-    armies: Array<Army>,
+    playerArmy: Army,
+    opposingArmy: Army,
     messages: Array<MessageType>,
-    maneuvers: Array<ManeuverType>
+    maneuvers: Array<Maneuver>,
+    processAfflictions: typeof processAfflictions,
+    performAffliction: typeof performAffliction,
+    addAffliction: typeof addAffliction
 };
 
 class BattleContainer extends Component<Props>
 {
     render()
     {
-        const [army1, army2] = this.props.armies;
+        const {playerArmy, opposingArmy} = this.props;
         return <div className="battle_container">
             <div className="battle_container__top">
             <ArmyStats
-                    name={army1.name}
-                    size={army1.size}
-                    morale={army1.morale}
-                    discipline={army1.discipline}
-                    attack={army1.attack}
+                    name={playerArmy.name}
+                    size={playerArmy.size}
+                    morale={playerArmy.morale}
+                    discipline={playerArmy.discipline}
+                    attack={playerArmy.attack}
                 />
                 <div className="army_stats">
                 {this.props.messages.map(this.mapMessages)}
                 </div>
                 <ArmyStats
-                    name={army2.name}
-                    size={army2.size}
-                    morale={army2.morale}
-                    discipline={army2.discipline}
-                    attack={army2.attack}
+                    name={opposingArmy.name}
+                    size={opposingArmy.size}
+                    morale={opposingArmy.morale}
+                    discipline={opposingArmy.discipline}
+                    attack={opposingArmy.attack}
                 />
             </div>
             <div className="battle_container__bottom">
-                <Maneuvers maneuvers={this.props.maneuvers} />
+                <Maneuvers
+                playerArmy={playerArmy}
+                computerArmy={this.props.opposingArmy}
+                maneuvers={this.props.maneuvers}
+                processAfflictions={this.props.processAfflictions}
+                performAffliction={this.props.performAffliction}
+                addAffliction={this.props.addAffliction}
+                />
             </div>
         </div>
     }
@@ -55,12 +67,19 @@ class BattleContainer extends Component<Props>
     }
 }
 
+const mapDispatchToProps = {
+    processAfflictions,
+    performAffliction,
+    addAffliction
+};
+
 const mapStateToProps = (state: any) => {
     return {
-        armies: selectArmies(state),
+        playerArmy: selectPlayerArmy(state),
+        opposingArmy: selectOpposingArmy(state),
         messages: selectMessages(state),
         maneuvers: selectManeuvers(state)
     }
 };
 
-export default connect(mapStateToProps)(BattleContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(BattleContainer);

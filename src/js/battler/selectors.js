@@ -1,8 +1,12 @@
 // @flow
 import {type State} from '../store/reducer';
 
-export const selectArmies = (state: State) => {
-    return state.battler.armies;
+export const selectPlayerArmy = (state: State) => {
+    return state.battler.playerArmy;
+};
+
+export const selectOpposingArmy = (state: State) => {
+    return state.battler.opposingArmy;
 };
 
 export const selectMessages = (state: State) => {
