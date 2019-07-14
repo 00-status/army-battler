@@ -18,15 +18,17 @@ type Props = {
 
 const Maneuvers = (props: Props) => {
     const processTurn = (maneuver: Maneuver) => {
+
         // Process current player maneuver
-        maneuver.afflictions.forEach(affliction => {
-            if (affliction.turns <= 0) {
-                props.performAffliction(false, affliction);
+        for (const key in maneuver.afflictions) {
+            const currentAffliction = maneuver.afflictions[key]; 
+            if (currentAffliction.turns <= 0) {
+                props.performAffliction(false, key, currentAffliction);
             }
             else {
-                props.addAffliction(false, affliction);
+                props.addAffliction(false, key, currentAffliction);
             }
-        });
+        }
         // Process afflictions for opponent
         props.processAfflictions(false);
 
