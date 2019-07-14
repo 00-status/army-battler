@@ -7,19 +7,24 @@ export type Army = {
     discipline: number,
     morale: number,
     size: number,
-    currentAfflictions: Array<Affliction>
+    currentAfflictions: IndexedAffliction
 };
 
 export type Message = {
     key: number,
     title: string,
     text: string
-}
+};
+
 export type Maneuver = {
     title: string,
     contents: string,
-    afflictions: Array<Affliction>
-}
+    afflictions: IndexedAffliction
+};
+
+type IndexedAffliction = {
+    [string]: Affliction
+}; 
 
 export type Affliction = {
     turns: number,
