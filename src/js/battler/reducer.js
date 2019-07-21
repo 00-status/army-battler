@@ -15,19 +15,15 @@ export type State = {
     maneuvers: Array<Maneuver>
 }
 const initialState: State = {
-    playerArmy:
-        {
-            name: 'Guardians',
-            desc: '',
-            attack: 4,
-            discipline: 3,
-            morale: 10,
-            size: 100,
-            currentAfflictions: {
-                'light-harm-2': {turns: 4, damageMod: 0, moraleMod: -2, defenseMod: 0, sizeMod: 0, nameMod: ''}
-            }
-        }
-    ,
+    playerArmy: {
+        name: 'Guardians',
+        desc: '',
+        attack: 4,
+        discipline: 3,
+        morale: 10,
+        size: 100,
+        currentAfflictions: {}
+    },
     opposingArmy: {
         name: 'Reavers',
         desc: '',
@@ -58,18 +54,18 @@ const initialState: State = {
             }
         },
         {
-            title: 'Army of the Dead',
-            contents: 'You see dead people.',
+            title: 'Bellowing Shout',
+            contents: 'A battle cry rings across the field!',
             afflictions: {
-                'army_of_the_dead': {turns: 1, damageMod: 0, moraleMod: 0, defenseMod: 0, sizeMod: 0, nameMod: 'Army of the Dead'}
+                'Bellowing Shout': {turns: 1, damageMod: -2, moraleMod: 0, defenseMod: 0, sizeMod: 0, nameMod: ''}
             }
         },
         {
             title: 'Champion of Light',
             contents: 'Shining Light.',
             afflictions: {
-                'light-heal-5': {turns: 0, damageMod: 0, moraleMod: 5, defenseMod: 0, sizeMod: 0, nameMod: ''},
-                'light-harm-2': {turns: 4, damageMod: 0, moraleMod: -2, defenseMod: 0, sizeMod: 0, nameMod: ''}
+                'light-heal-5': {turns: 4, damageMod: 0, moraleMod: -1, defenseMod: 0, sizeMod: 0, nameMod: ''},
+                'light-harm-2': {turns: 0, damageMod: -1, moraleMod: 0, defenseMod: 0, sizeMod: 0, nameMod: ''}
             }
         }
     ]
