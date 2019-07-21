@@ -17,25 +17,31 @@ type Props = {
 };
 
 const Maneuvers = (props: Props) => {
-    const processTurn = (maneuver: Maneuver) => {
-
-        // Process current player maneuver
-        for (const key in maneuver.afflictions) {
-            const currentAffliction = maneuver.afflictions[key]; 
-            if (currentAffliction.turns <= 0) {
-                props.performAffliction(false, key, currentAffliction);
-            }
-            else {
-                props.addAffliction(false, key, currentAffliction);
-            }
-        }
+    const processTurn = (maneuver: Maneuver) =>
+    {
+        // Player's Turn
+        handleManeuver(maneuver, false)
         // Process afflictions for opponent
         props.processAfflictions(false);
 
-        // Do opponent's turn
-
+        // Opponent's turn
+        // Randomly select a maneuver
+        const maneuverIndex = Math.floor(Math.random() * props.maneuvers.length);
+        handleManeuver(props.maneuvers[maneuverIndex], true);
         // Process afflictions for the player
         props.processAfflictions(true);
+    };
+
+    const handleManeuver = (maneuver: Maneuver, onPlayer: boolean) => {
+        for (const key in maneuver.afflictions) {
+            const currentAffliction = maneuver.afflictions[key]; 
+            if (currentAffliction.turns <= 0) {
+                props.performAffliction(onPlayer, key, currentAffliction);
+            }
+            else {
+                props.addAffliction(onPlayer, key, currentAffliction);
+            }
+        }
     };
 
     const [currentText, setCurrentText] = useState('');
