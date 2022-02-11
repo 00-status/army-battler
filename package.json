@@ -30,7 +30,7 @@
         "webpack-dev-server": "^3.1.14"
     },
     "dependencies": {
-        "ajv": "^6.8.1",
+        "ajv": "^6.12.3",
         "babel-cli": "^6.26.0",
         "babel-preset-env": "^1.7.0",
         "flow-remove-types": "^1.2.3",
